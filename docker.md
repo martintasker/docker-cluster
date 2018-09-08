@@ -14,7 +14,7 @@ Basics:
 When you run an image, it creates a container, which you can give a name:
 
 ```sh
-run [-ti] [-d] [--container-name xx] image-name cmd
+run [-ti] [-d] [--name container-name] image-name cmd
 start id|container-name
 attach id|container-name
 exec [-ti] [-d] id|container-name cmd
