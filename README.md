@@ -61,3 +61,17 @@ In `cluster1402` and `hello1402` we've made some changes:
 * to link to this volume, the `docker-compose.yaml` file has a `volumes:` specification binding the relevant host source directory to the in-container mount point
 * the `npm install` is now done in the _host_, not as part of building the Docker container, and there is no need to copy anything
 * you can now use `docker-compose restart hello1402` to restart that particular service after making a source code change
+
+## Second app
+
+Now we have two services, in `cluster1403`:
+
+* the `hello1402` service which we already had
+* a new `hello1403` service which fetches the result of `hello1402` and delivers that
+
+Now what's interesting here is:
+
+* in `hello1403/index.js`, we fetch from `http://hello1402:1402`, ie we refer to the other service _by docker-compose service name_
+* we do _not_ expose port 1402 to the host, in the description of `hello1402` service in `cluster1403/docker-compose.yaml`: the port is exposed to the docker network, and that's sufficient
+* the `.yaml` now contains a description of both services, which are built and brought up simultaneously
+* when you do a `docker-compose restart` on one service, the log-following is not interrupted -- provided there's always at least one service running
