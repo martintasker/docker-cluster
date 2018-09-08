@@ -1,0 +1,50 @@
+{
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:node/recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "spread": true
+    }
+  },
+  "plugins": [
+    "node"
+  ],
+  "globals": {
+  },
+  "rules": {
+    "strict": 0,
+    "node/exports-style": ["error", "module.exports"],
+    "no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "_ignore_me_?[1-9]?" }
+    ],
+    "indent": [
+      "warn",
+      2,
+      {"SwitchCase": 1}
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-console": "warn"
+  },
+  "overrides": [
+    {
+      "files": [ "*.test.js" ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+
+}

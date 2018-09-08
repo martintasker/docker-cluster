@@ -1,0 +1,8 @@
+.DS_Store
+.localized
+.idea
+node_modules
+npm-debug.log
+docs
+src/static
+.env*
