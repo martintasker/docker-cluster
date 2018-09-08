@@ -12,3 +12,9 @@ Steps to get there:
 * bring in a few other interesting services eg Postgres and Redis
 
 We'll start this on Ubuntu 18.04.  But we'd like this, eventually, to work on Mac and Windows too.
+
+## First app
+
+### Bare-metal
+
+`hello1400/` contains first app.  Use `npm start` (or merely `node index`) to start it: it will listen on port 1400 and say `hello world` in response to any HTTP request.
