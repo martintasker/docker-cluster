@@ -52,3 +52,12 @@ In `cluster1401`, we've defined a `docker-compose.yaml` file which (in the first
 * to both build and run, just `docker-compose up`
 * to remove images generated thereby, `docker-compose rm`
 * use `docker-compose up -d` to daemonize, and `docker-compose logs -f` to see the logs
+
+### Restart on code change
+
+In `cluster1402` and `hello1402` we've made some changes:
+
+* the Dockerfile has a `VOLUME /app` statement, defining a mount point, before the `WORKDIR /app` statement
+* to link to this volume, the `docker-compose.yaml` file has a `volumes:` specification binding the relevant host source directory to the in-container mount point
+* the `npm install` is now done in the _host_, not as part of building the Docker container, and there is no need to copy anything
+* you can now use `docker-compose restart hello1402` to restart that particular service after making a source code change

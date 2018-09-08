@@ -1,0 +1,8 @@
+version: '3'
+services:
+  hello1402:
+    build: ../hello1402
+    ports:
+      - "1402:1402"
+    volumes:
+      - ../hello1402:/app
