@@ -43,3 +43,12 @@ This is well and good, but there are problems with it:
 * many parameters in `build.sh` and `run.sh`
 * difficulty attaching to the running container
 * need to restart rapidly when we make a development change
+
+### Single docker container, with Compose
+
+In `cluster1401`, we've defined a `docker-compose.yaml` file which (in the first instance) just wraps `../hello1401` in a docker command.  Note:
+
+* we no longer need `build.sh` and `run.sh`, because they're invoked from `docker-compose`
+* to both build and run, just `docker-compose up`
+* to remove images generated thereby, `docker-compose rm`
+* use `docker-compose up -d` to daemonize, and `docker-compose logs -f` to see the logs

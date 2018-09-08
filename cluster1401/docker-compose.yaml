@@ -1,0 +1,6 @@
+version: '3'
+services:
+  hello1401:
+    build: ../hello1401
+    ports:
+     - "1401:1401"
