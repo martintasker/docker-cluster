@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db:
+    image: postgres:9.5-alpine
+
+  db-update:
+    build: .
+    volumes:
+      - ./db-patches:/db-patches
+    command: lq update
+    depends_on:
+      - db
+
+  db-rollback:
+    build: .
+    volumes:
+      - ./db-patches:/db-patches
+    command: lq rollbackCount 1
+    depends_on:
+      - db

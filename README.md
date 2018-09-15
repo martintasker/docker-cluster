@@ -108,3 +108,32 @@ This is a great start, though it leaves lots of practical database questions ope
 Microservices require a different database for each service.  We can do that with postgres containers, see compose file in `cluster-db-2/` which specifies `db-1` and `db-2` containers, which are separately instantiated, initialized and persisted.
 
 You can demonstrate separate persistence by creating different tables in each, stopping the cluster, bringing it up again, and checking (a) that data persists and (b) that containers are distinct.
+
+### Revision management
+
+I've chosen to do revision management with Liquibase.  Liquibase's installation complexities almost outweight its usefulness -- a perfect indication for Docker containerization.
+
+In the `liquibase/` directory, you have
+
+* a compose file which defines `db`, a database, and which should be started in production using `docker-compose up db`
+* two liquibase revision management services, `db-update`, which takes the db to the latest defined revision, and `db-rollback`, which rolls it back just one revision
+* `exec-psql.sh`, which executes `psql` in the context of the `db` service
+
+The Liquibase image is defined in its own `Dockerfile` which
+
+* builds on a lightweight Alpine/Java 8 base
+* includes the Liquibase command and postgres JDBC driver, hard-copied from `./lib`
+* includes a convenience `lq.sh` to set Liquibase parameters for any offered command
+
+So, you use
+
+* `docker-compose up db` to bring up the database and keep it going
+* `docker-compose up db-update` to update the database to the latest revision
+* `docker-compose up db-rollback` to rollback the database by one revision
+* `./exec-psql.sh` to go into a `psql` shell on the given database
+
+So we have the core of a solution for revision management.  But this is only a first step: we need also,
+
+* a compose file which only brings up the runtime services, so that we don't have to remember to specify a given service
+* therefore, a separate compose file for the support services
+* additional parameterization on the liquibase image so that it can be used in the context of multi-db microservice clusters

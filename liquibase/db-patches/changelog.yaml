@@ -1,0 +1,27 @@
+databaseChangeLog:
+
+- changeSet:
+    id: 1
+    author: martin
+    sqlFile:
+      path: 20180720.create-things-table.sql
+    rollback:
+      sqlFile:
+        path: 20180720.create-things-table.rollback.sql
+- changeSet:
+    id: 2
+    author: martin
+    sqlFile:
+      path: 20180720.add-things-id.sql
+    rollback:
+      sqlFile:
+        path: 20180720.add-things-id.rollback.sql
+- changeSet:
+    id: 3
+    author: martin
+    sqlFile:
+      path: 20180721.things-name-rename.sql
+    rollback:
+      sqlFile:
+        path: 20180721.things-name-rename.rollback.sql
+

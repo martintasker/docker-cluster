@@ -1,0 +1,9 @@
+#!/bin/sh
+liquibase \
+  --url=jdbc:postgresql://db/ \
+  --classpath=/usr/bin/postgresql.jar:/db-patches/ \
+  --changeLogFile=changelog.yaml \
+  --logLevel=info \
+  --username=postgres \
+  --password= \
+  $*
