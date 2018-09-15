@@ -1,0 +1,6 @@
+version: '3'
+services:
+  db-1:
+    image: postgres:9.5-alpine
+  db-2:
+    image: postgres:9.5-alpine

@@ -75,3 +75,36 @@ Now what's interesting here is:
 * we do _not_ expose port 1402 to the host, in the description of `hello1402` service in `cluster1403/docker-compose.yaml`: the port is exposed to the docker network, and that's sufficient
 * the `.yaml` now contains a description of both services, which are built and brought up simultaneously
 * when you do a `docker-compose restart` on one service, the log-following is not interrupted -- provided there's always at least one service running
+
+## Database
+
+### Single database
+
+The most trivial configuration is in `cluster-db-1/`, simply specifying a `postgres:9.5-alpine` image.
+
+This brings up with a highly visible warning, and without a password.
+
+You can access it using `docker-compose exec db psql -U postgres`, and then place some data in it using, eg
+
+```sql
+create table info (name text,description text);
+insert into info values('foo','first meta-variable');
+```
+
+You can then see that this worked, using `select * from info;`.
+
+Check persistence: interrupt the cluster, bring it up again, connect again and issue the same `select * from info;` command, and you'll see the data is still there.  The data is stored in the container itself, since no mapping to host is provided for the needed volume.
+
+This is a great start, though it leaves lots of practical database questions open:
+
+* one db per microservice
+* revision management
+* programmatic access
+* persistent data management
+* credential management
+
+### Distinct databases
+
+Microservices require a different database for each service.  We can do that with postgres containers, see compose file in `cluster-db-2/` which specifies `db-1` and `db-2` containers, which are separately instantiated, initialized and persisted.
+
+You can demonstrate separate persistence by creating different tables in each, stopping the cluster, bringing it up again, and checking (a) that data persists and (b) that containers are distinct.
