@@ -1,0 +1,13 @@
+version: '3'
+services:
+  db-update:
+    build: ../liquibase
+    volumes:
+      - ./db-patches:/db-patches
+    command: lq update
+
+  db-rollback:
+    build: ../liquibase
+    volumes:
+      - ./db-patches:/db-patches
+    command: lq rollbackCount 1
