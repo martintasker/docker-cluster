@@ -113,13 +113,13 @@ You can demonstrate separate persistence by creating different tables in each, s
 
 I've chosen to do revision management with Liquibase.  Liquibase's installation complexities almost outweight its usefulness -- a perfect indication for Docker containerization.
 
-In the `liquibase/` directory, you have
+In the `cluster-db-3/` directory, you have
 
 * a compose file which defines `db`, a database, and which should be started in production using `docker-compose up db`
 * two liquibase revision management services, `db-update`, which takes the db to the latest defined revision, and `db-rollback`, which rolls it back just one revision
 * `exec-psql.sh`, which executes `psql` in the context of the `db` service
 
-The Liquibase image is defined in its own `Dockerfile` which
+The Liquibase image is defined in its own `../liquibase/Dockerfile` which
 
 * builds on a lightweight Alpine/Java 8 base
 * includes the Liquibase command and postgres JDBC driver, hard-copied from `./lib`

@@ -4,7 +4,7 @@ services:
     image: postgres:9.5-alpine
 
   db-update:
-    build: .
+    build: ../liquibase
     volumes:
       - ./db-patches:/db-patches
     command: lq update
@@ -12,7 +12,7 @@ services:
       - db
 
   db-rollback:
-    build: .
+    build: ../liquibase
     volumes:
       - ./db-patches:/db-patches
     command: lq rollbackCount 1
