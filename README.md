@@ -81,11 +81,14 @@ Now what's interesting here is:
 
 ### Single database
 
-The most trivial configuration is in `cluster-db-1/`, simply specifying a `postgres:9.5-alpine` image.
+We bring up a series of cluster databases.  We don't have to build an image because we're using stock images directly.  So there's no `Dockerfile`, only an `image` statement in `docker-compose.yaml`.
 
-This brings up with a highly visible warning, and without a password.
+The simplest configuration is in `cluster-db-1/`,
 
-You can access it using `docker-compose exec db psql -U postgres`, and then place some data in it using, eg
+* `docker-compose.yaml` specifies a `postgres:11.8-alpine` image, plus some environment
+* `.env` specifies the password: this would not normally be committed to source
+
+Start the db with `docker-compose up`.  You can access it using `docker-compose exec db psql -U cluster` (password will be supplied from `.env`), and then place some data in it using, eg
 
 ```sql
 create table info (name text,description text);
@@ -102,7 +105,6 @@ This is a great start, though it leaves lots of practical database questions ope
 * revision management
 * programmatic access
 * persistent data management
-* credential management
 
 ### Distinct databases
 
