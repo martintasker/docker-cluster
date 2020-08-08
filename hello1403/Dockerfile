@@ -1,6 +1,14 @@
-FROM node:8-alpine
+FROM node:14.7-alpine3.10 as builder
 
-VOLUME /app
 WORKDIR /app
+COPY package.json .
+RUN npm install
+
+FROM node:14.7-alpine3.10
+WORKDIR /app
+COPY --from=builder app/node_modules  node_modules
+COPY --from=builder app/package.json .
+COPY index.js .
+VOLUME /app/src
 EXPOSE 1403
 CMD ["npm", "start"]

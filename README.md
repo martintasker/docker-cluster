@@ -72,7 +72,7 @@ Now we have two services, in `cluster1403`:
 
 Now what's interesting here is:
 
-* in `hello1403/index.js`, we fetch from `http://hello1402:1402`, ie we refer to the other service _by docker-compose service name_
+* in `hello1403/src/routes.js`, we fetch from `http://hello1402:1402`, ie we refer to the other service _by docker-compose service name_
 * we do _not_ expose port 1402 to the host, in the description of `hello1402` service in `cluster1403/docker-compose.yaml`: the port is exposed to the docker network, and that's sufficient
 * the `.yaml` now contains a description of both services, which are built and brought up simultaneously
 * when you do a `docker-compose restart` on one service, the log-following is not interrupted -- provided there's always at least one service running

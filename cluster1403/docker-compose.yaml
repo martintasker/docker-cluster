@@ -3,10 +3,10 @@ services:
   hello1402:
     build: ../hello1402
     volumes:
-      - ../hello1402:/app
+      - ../hello1402/src:/app/src
   hello1403:
     build: ../hello1403
     ports:
       - "1403:1403"
     volumes:
-      - ../hello1403:/app
+      - ../hello1403/src:/app/src
