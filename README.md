@@ -36,7 +36,7 @@ You can inspect the file layout with `docker exec -ti hello1401 /bin/sh`, but yo
 
 You can see the live console if you start without daemonizing, ie without `-d`.
 
-As usual we test with curl.
+Test with `curl localhost:1401`.
 
 This is well and good, but there are problems with it:
 
@@ -59,7 +59,7 @@ In `cluster1402` and `hello1402` we've made some changes:
 
 * the Dockerfile has a `VOLUME /app` statement, defining a mount point, before the `WORKDIR /app` statement
 * to link to this volume, the `docker-compose.yaml` file has a `volumes:` specification binding the relevant host source directory to the in-container mount point
-* the `npm install` is now done in the _host_, not as part of building the Docker container, and there is no need to copy anything
+* the `npm install` is now done in a _builder_ phase, not as part of the runtime container
 * you can now use `docker-compose restart hello1402` to restart that particular service after making a source code change
 
 ## Second app
