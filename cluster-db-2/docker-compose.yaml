@@ -1,6 +1,14 @@
 version: '3'
 services:
   db-1:
-    image: postgres:9.5-alpine
+    image: postgres:11.8-alpine
+    environment:
+      - POSTGRES_USER=cluster
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=cluster_db_1
   db-2:
-    image: postgres:9.5-alpine
+    image: postgres:11.8-alpine
+    environment:
+      - POSTGRES_USER=cluster
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=cluster_db_2
