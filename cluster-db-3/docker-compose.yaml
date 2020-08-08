@@ -1,20 +1,36 @@
 version: '3'
 services:
   db:
-    image: postgres:9.5-alpine
+    image: postgres:11.8-alpine
+    environment:
+      - POSTGRES_USER=cluster
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=cluster
 
   db-update:
     build: ../liquibase
     volumes:
       - ./db-patches:/db-patches
-    command: lq update
+    environment:
+      - PG_HOST=db
+      - PG_USER=cluster
+      - PG_PASS=${PG_PASS}
+      - PG_DATABASE=cluster
+      - PG_PORT=5432
     depends_on:
       - db
+    command: lq update
 
   db-rollback:
     build: ../liquibase
     volumes:
       - ./db-patches:/db-patches
-    command: lq rollbackCount 1
+    environment:
+      - PG_HOST=db
+      - PG_USER=cluster
+      - PG_PASS=${PG_PASS}
+      - PG_DATABASE=cluster
+      - PG_PORT=5432
     depends_on:
       - db
+    command: lq rollbackCount 1

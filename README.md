@@ -114,7 +114,9 @@ You can demonstrate separate persistence by creating different tables in each, s
 
 ### Revision management
 
-I've chosen to do revision management with Liquibase.  Liquibase's installation complexities almost outweight its usefulness -- a perfect indication for Docker containerization.
+I've chosen to do revision management with Liquibase.  Liquibase's installation complexities almost outweigh its usefulness -- a perfect indication for Docker containerization.
+
+> todo: complete the porting of lq migrations
 
 In the `cluster-db-3/` directory, you have
 

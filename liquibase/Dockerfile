@@ -11,7 +11,7 @@ RUN ln -s /liquibase/liquibase /usr/bin/
 COPY lib/postgresql-42.2.5.jar /usr/bin/postgresql.jar
 
 # our convenience accessor for Liquibase
-ADD bin/lq /usr/bin/lq
+COPY bin/lq /usr/bin/lq
 RUN chmod +x /usr/bin/lq
 
 # directory including changelog.yaml and all the patches it points to
