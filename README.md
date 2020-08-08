@@ -57,10 +57,11 @@ In `cluster1401`, we've defined a `docker-compose.yaml` file which (in the first
 
 In `cluster1402` and `hello1402` we've made some changes:
 
-* the Dockerfile has a `VOLUME /app` statement, defining a mount point, before the `WORKDIR /app` statement
+* `Dockerfile` now has two-phase build, in which we `npm install` in one phase, and then copy the results of that install into the next phase.  The merit of this process is that it enables all kinds of build-time stuff, involving footprint bloat or leakage of confidential keys, to go into the builder, but only the slim final container is output, stored, and used at runtime.
+* `Dockerfile` has a `VOLUME /app/src` statement, defining a mount point
 * to link to this volume, the `docker-compose.yaml` file has a `volumes:` specification binding the relevant host source directory to the in-container mount point
-* the `npm install` is now done in a _builder_ phase, not as part of the runtime container
 * you can now use `docker-compose restart hello1402` to restart that particular service after making a source code change
+* actually, for source code change in `index.js` or `package.json`, you'll have to rebuild the container; but for the majority of changes, in `src/`, you can edit and then simply restart
 
 ## Second app
 

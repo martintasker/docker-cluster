@@ -5,4 +5,4 @@ services:
     ports:
       - "1402:1402"
     volumes:
-      - ../hello1402:/app
+      - ../hello1402/src:/app/src
