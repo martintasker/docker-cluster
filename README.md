@@ -13,7 +13,9 @@ Steps to get there:
 
 We'll start this on Ubuntu 18.04.  But we'd like this, eventually, to work on Mac and Windows too.
 
-## First app
+## Docker and Docker-compose
+
+We start this with Docker and Docker-compose, in the `compose/` directory.
 
 ### Bare-metal
 
