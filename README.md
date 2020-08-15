@@ -153,3 +153,20 @@ So we have the core of a solution for revision management.  But this is only a f
 * `./exec-psql.sh` goes into a `psql` shell on the given database -- same
 
 This has room for a (not yet done) docker-compose.yaml file which contains the main application, dependent on these services.
+
+## Kubernetes
+
+We're going to migrate to Kubernetes, in the `k8s/` directory.
+
+To start, make sure you have a working Kubernetes installation, perhaps using Docker Desktop.  Check with `kubectl cluster-info` and `kubectl get nodes`.
+
+### Super-primitive pod
+
+`cluster1401` turns the `hello1401` container, previously built with `docker-compose build`, into a Kubernetes pod.
+
+`k-start.sh` then starts the pod, and starts forwarding host port 1401 to pod port 1401.  Note that the port-forwarding operation doesn't succeed until the pod has properly launched.
+
+This is a _very_ primitive and wrong way of using Kubernetes!  We need
+
+* port forwarding which works more reliably, and doesn't hog a shell
+* a nice way to look at logs
