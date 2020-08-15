@@ -138,13 +138,16 @@ So we have the core of a solution for revision management.  But this is only a f
 
 * a compose file which only brings up the runtime services, so that we don't have to remember to specify a given service
 * therefore, a separate compose file for the support services
-* additional parameterization on the liquibase image so that it can be used in the context of multi-db microservice clusters
+* more resource pointers as environment variables
 
 ### Services vs tools
 
 `cluster-db-4/` addresses the separation of runtime services and tools, so that now
 
-* `docker-compose up` brings up the database and keeps it going -- more convenient
-* `docker-compose -f tools.yaml up db-update` updates the database to the latest revision -- less convenient
-* `docker-compose -f tools.yaml up db-rollback` rolls back the database by one revision -- less convenient
+* `.env` carries references -- mostly these should _not_ be committed to source in production contexts
+* `docker-compose -f db.yaml up` brings up the database and keeps it going
+* `docker-compose -f db-tools.yaml up db-update` updates the database to the latest revision
+* `docker-compose -f db-tools.yaml up db-rollback` rolls back the database by one revision
 * `./exec-psql.sh` goes into a `psql` shell on the given database -- same
+
+This has room for a (not yet done) docker-compose.yaml file which contains the main application, dependent on these services.

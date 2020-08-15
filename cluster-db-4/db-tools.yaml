@@ -1,0 +1,36 @@
+version: '3'
+services:
+  db-update:
+    build: ../liquibase
+    volumes:
+      - ./db-patches:/db-patches
+    networks:
+      - cluster
+    command: >-
+      liquibase
+        --url=jdbc:postgresql://${PG_HOST}:${PG_PORT}/cluster
+        --classpath=/usr/bin/postgresql.jar:/db-patches/
+        --changeLogFile=changelog.yaml
+        --logLevel=info
+        --username=${PG_USER}
+        --password=${PG_PASS}
+        update
+    
+  db-rollback:
+    build: ../liquibase
+    volumes:
+      - ./db-patches:/db-patches
+    networks:
+      - cluster
+    command: >-
+      liquibase
+      --url=jdbc:postgresql://${PG_HOST}:${PG_PORT}/cluster
+      --classpath=/usr/bin/postgresql.jar:/db-patches/
+        --changeLogFile=changelog.yaml
+        --logLevel=info
+        --username=${PG_USER}
+        --password=${PG_PASS}
+        rollbackCount 1
+  
+networks:
+  cluster:

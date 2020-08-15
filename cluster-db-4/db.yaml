@@ -1,0 +1,13 @@
+version: '3'
+services:
+  cluster-db:
+    image: postgres:11.8-alpine
+    networks:
+      - cluster
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=${PG_DATABASE}
+
+networks:
+  cluster:

@@ -1,2 +1,2 @@
 #!/bin/sh
-docker-compose exec db psql -U postgres
+docker-compose -f db.yaml exec cluster-db psql -U cluster
