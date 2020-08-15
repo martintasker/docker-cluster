@@ -10,9 +10,5 @@ RUN ln -s /liquibase/liquibase /usr/bin/
 # postgres JDBC driver, obtained from https://jdbc.postgresql.org/download.html, latest Java 8+ driver
 COPY lib/postgresql-42.2.5.jar /usr/bin/postgresql.jar
 
-# our convenience accessor for Liquibase
-COPY bin/lq /usr/bin/lq
-RUN chmod +x /usr/bin/lq
-
 # directory including changelog.yaml and all the patches it points to
 VOLUME /db-patches

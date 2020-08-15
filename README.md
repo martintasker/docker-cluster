@@ -116,8 +116,6 @@ You can demonstrate separate persistence by creating different tables in each, s
 
 I've chosen to do revision management with Liquibase.  Liquibase's installation complexities almost outweigh its usefulness -- a perfect indication for Docker containerization.
 
-> todo: complete the porting of lq migrations
-
 In the `cluster-db-3/` directory, you have
 
 * a compose file which defines `db`, a database, and which should be started in production using `docker-compose up db`
@@ -128,7 +126,6 @@ The Liquibase image is defined in its own `../liquibase/Dockerfile` which
 
 * builds on a lightweight Alpine/Java 8 base
 * includes the Liquibase command and postgres JDBC driver, hard-copied from `./lib`
-* includes a convenience `lq.sh` to set Liquibase parameters for any offered command
 
 So, you use
 

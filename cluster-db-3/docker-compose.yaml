@@ -11,26 +11,31 @@ services:
     build: ../liquibase
     volumes:
       - ./db-patches:/db-patches
-    environment:
-      - PG_HOST=db
-      - PG_USER=cluster
-      - PG_PASS=${PG_PASS}
-      - PG_DATABASE=cluster
-      - PG_PORT=5432
     depends_on:
       - db
-    command: lq update
+    command: >-
+      liquibase
+        --url=jdbc:postgresql://db/cluster
+        --classpath=/usr/bin/postgresql.jar:/db-patches/
+        --changeLogFile=changelog.yaml
+        --logLevel=info
+        --username=cluster
+        --password=${PG_PASS}
+        update
 
   db-rollback:
     build: ../liquibase
     volumes:
       - ./db-patches:/db-patches
-    environment:
-      - PG_HOST=db
-      - PG_USER=cluster
-      - PG_PASS=${PG_PASS}
-      - PG_DATABASE=cluster
-      - PG_PORT=5432
     depends_on:
       - db
-    command: lq rollbackCount 1
+    command: >-
+      liquibase
+        --url=jdbc:postgresql://db/cluster
+        --classpath=/usr/bin/postgresql.jar:/db-patches/
+        --changeLogFile=changelog.yaml
+        --logLevel=info
+        --username=cluster
+        --password=${PG_PASS}
+        rollbackCount 1
+  
