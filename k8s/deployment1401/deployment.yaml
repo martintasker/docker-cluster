@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello1401
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello1401
+  template:
+    metadata:
+      labels:
+        app: hello1401
+    spec:
+      containers:
+      - name: hello1401
+        image: cluster1401_hello1401
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 1401

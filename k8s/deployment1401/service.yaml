@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello1401
+  labels:
+    app: hello1401
+spec:
+  type: NodePort
+  ports:
+  - port: 1401
+    nodePort: 31401
+    protocol: TCP
+  selector:
+    app: hello1401

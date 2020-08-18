@@ -162,11 +162,56 @@ To start, make sure you have a working Kubernetes installation, perhaps using Do
 
 ### Super-primitive pod
 
-`cluster1401` turns the `hello1401` container, previously built with `docker-compose build`, into a Kubernetes pod.
+`k8s/pod1401` turns the `hello1401` container, previously built with `docker-compose build`, into a Kubernetes pod.
 
 `k-start.sh` then starts the pod, and starts forwarding host port 1401 to pod port 1401.  Note that the port-forwarding operation doesn't succeed until the pod has properly launched.
+
+You can look at logs with
+
+```sh
+kubectl logs -f hello1401
+```
 
 This is a _very_ primitive and wrong way of using Kubernetes!  We need
 
 * port forwarding which works more reliably, and doesn't hog a shell
-* a nice way to look at logs
+* a nicer way to look at logs
+
+### Logging
+
+> complete
+
+The most primitive way to follow logs uses `kubectl logs -f`.  You can effectively do the same with host logs.
+
+The most common way to log is to include a node-level logging agent, often elasticsearch, in turn based on fluentd.
+
+A pod-relative "sidecar container" is also possible as a logging agent.
+
+### Sensible networking
+
+First, use a Deployment instead of a Pod: see `k8s/pod1401`.  We're just creating 3 instances without yet exploiting any of the fancy Deployment features (scaling, healing).
+
+Second, use [k8s networking](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/) and Services.  Tenets of k8s networking are:
+
+* each Pod has its own cluster-private IP address, typically on `10.1.0.0/16`.
+* (and therefore, each Pod has its own full range of ports)
+* specify `containerPort` on a Pod to say what port will be exposed, and available to any node in cluster
+
+You can get IP address info `kubectl get pods -o wide`.
+
+Start a shell on one of the container, eg
+
+```sh
+kubectl exec -ti hello1401 ash
+```
+
+Then you can `curl 10.1.x.x:1401` to any of the three Pods in the Deployment, and you'll see the Hello response.
+
+To hide this behind a single `Service`,
+
+* create the service with `kubectl apply -f service.yaml`
+* do `kubectl get services`, and note the ClusterIP address of `hello1401`
+* from an `ash` terminal within the cluster, `curl 10.96.163.76:1401` (or whatever address it was) and you'll reach one of the three Pods, via the Service
+* you can also `curl hello1401:1401` to get the same via DNS
+
+Given that the `service.yaml` (now) has `type: NodePort` and `nodePort: 31401`, on development systems you can access the service from outside the cluster, eg `curl localhost:31401`.  Only high ports in range 30000-32767 are allowed for this.
