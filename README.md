@@ -215,3 +215,14 @@ To hide this behind a single `Service`,
 * you can also `curl hello1401:1401` to get the same via DNS
 
 Given that the `service.yaml` (now) has `type: NodePort` and `nodePort: 31401`, on development systems you can access the service from outside the cluster, eg `curl localhost:31401`.  Only high ports in range 30000-32767 are allowed for this.
+
+### Minimum true cluster
+
+`k8s/cluster-1` runs a cluster containing
+
+* a three-way deployment of the `echo` image defined in `k8s/echo`
+* a NodePort service to access that from outside the cluster
+
+The `echo` image reads its hostname from `process.env.HOSTNAME` and echoes that.  The `PORT` is fed in as an argument, so that configuration is in the domain of Docker and K8s, not NodeJS or the application code.  Ironically, since we're outside the domain of docker-compose, we have to build and name the image ourselves, which is done with `build.sh`.
+
+The NodePort service exposes `echo` deployments on port 31402.  Repeated curling of this port on `localhost` shows that the service is randomly choosing a pod for each request.

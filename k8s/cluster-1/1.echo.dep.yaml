@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: echo-env
+  template:
+    metadata:
+      labels:
+        app: echo-env
+    spec:
+      containers:
+      - name: echo-env
+        image: echo
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 1401
