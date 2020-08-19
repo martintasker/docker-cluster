@@ -187,7 +187,7 @@ The most common way to log is to include a node-level logging agent, often elast
 
 A pod-relative "sidecar container" is also possible as a logging agent.
 
-### Sensible networking
+### Sane networking
 
 First, use a Deployment instead of a Pod: see `k8s/pod1401`.  We're just creating 3 instances without yet exploiting any of the fancy Deployment features (scaling, healing).
 
@@ -216,7 +216,7 @@ To hide this behind a single `Service`,
 
 Given that the `service.yaml` (now) has `type: NodePort` and `nodePort: 31401`, on development systems you can access the service from outside the cluster, eg `curl localhost:31401`.  Only high ports in range 30000-32767 are allowed for this.
 
-### Minimum true cluster
+### Minimum sane cluster
 
 `k8s/cluster-1` runs a cluster containing
 
@@ -226,3 +226,13 @@ Given that the `service.yaml` (now) has `type: NodePort` and `nodePort: 31401`, 
 The `echo` image reads its hostname from `process.env.HOSTNAME` and echoes that.  The `PORT` is fed in as an argument, so that configuration is in the domain of Docker and K8s, not NodeJS or the application code.  Ironically, since we're outside the domain of docker-compose, we have to build and name the image ourselves, which is done with `build.sh`.
 
 The NodePort service exposes `echo` deployments on port 31402.  Repeated curling of this port on `localhost` shows that the service is randomly choosing a pod for each request.
+
+### Minimum sane logging
+
+See [Stern binary downloads](https://github.com/wercker/stern/releases).  Download and install somewhere suitable.
+
+```sh
+stern --color=never echo
+```
+
+or such will then tail-log the `echo` pods.
